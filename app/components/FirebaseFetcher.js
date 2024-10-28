@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
@@ -36,7 +36,7 @@ export default function FirebaseFetcher() {
           { id: docRef.id, name: name, grade: grade },
         ]);
 
-        setName(''); // Clear input fields after submission
+        setName('');
         setGrade('');
         alert('Student added successfully!');
       } catch (error) {
@@ -49,32 +49,34 @@ export default function FirebaseFetcher() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Input fields for name and grade */}
-      <TextInput
-        placeholder="Enter name"
-        value={name}
-        onChangeText={setName}
-        style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Enter grade"
-        value={grade}
-        onChangeText={setGrade}
-        style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
-        keyboardType="numeric"
-      />
-      <Button title="Add Student" onPress={addStudent} />
+    <ScrollView>
+      <View style={styles.container}>
+        {/* Input fields for name and grade */}
+        <TextInput
+          placeholder="Enter name"
+          value={name}
+          onChangeText={setName}
+          style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+        />
+        <TextInput
+          placeholder="Enter grade"
+          value={grade}
+          onChangeText={setGrade}
+          style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+          keyboardType="numeric"
+        />
+        <Button title="Add Student" onPress={addStudent} />
 
-      {/* Displaying list of students */}
-      <View style={styles.studentMap}>
-        {students.map((student) => (
-            <View style={styles.studentlist}>
-          <Text key={student.id}>{student.name} - Grade: {student.grade}</Text>
-          </View>
-        ))}
+        {/* Displaying list of students */}
+        <View style={styles.studentMap}>
+          {students.map((student) => (
+            <View style={styles.studentlist} key={student.id}>
+              <Text>{student.name} - Grade: {student.grade}</Text>
+            </View>
+          ))}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -86,15 +88,15 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   studentlist: {
-    borderWidth:1,
-    marginVertical:10,
-    paddingVertical:10,
-    paddingHorizontal:10,
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     borderRadius: 10,
   },
   studentMap: {
-    width:'60%',
+    width: '60%',
     marginVertical: 20,
-    margin:'auto'
-  }
+    alignSelf: 'center',
+  },
 });
