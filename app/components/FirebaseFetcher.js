@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
+import { useContext } from 'react';
+import { GradebookContext } from '../../components/GradebookContext';
 
 export default function FirebaseFetcher() {
   const [students, setStudents] = useState([]);
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
-
+  const { thresholds, setThresholds } = useContext(GradebookContext);
   useEffect(() => {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, 'students'));
@@ -21,6 +23,13 @@ export default function FirebaseFetcher() {
 
     fetchData();
   }, []);
+
+  const handelThresholdChange = (value, grade) => {
+    setThresholds(prev => ({
+      ...prev,
+      [grade]: Number(value)
+    }))
+  }
 
   const addStudent = async () => {
     if (name && grade) { // Ensure both fields are filled
@@ -50,7 +59,29 @@ export default function FirebaseFetcher() {
 
   return (
     <ScrollView>
+     
       <View style={styles.container}>
+        
+      <TextInput
+  placeholder="Set A+ Threshold"
+  value={String(thresholds.APlus)} // Ensure this state is valid
+  onChangeText={(text) => handelThresholdChange(text, 'APlus')} // Fix typo in grade key
+  style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+/>
+<TextInput
+  placeholder="Set B+ Threshold"
+  value={String(thresholds.BPlus)}
+  onChangeText={(text) => handelThresholdChange(text, 'BPlus')} // Fix typo in grade key
+  style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+/>
+<TextInput
+  placeholder="Set C+ Threshold"
+  value={String(thresholds.CPlus)}
+  onChangeText={(text) => handelThresholdChange(text, 'CPlus')} // Fix typo in grade key
+  style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+/>
+
+    
         {/* Input fields for name and grade */}
         <TextInput
           placeholder="Enter name"
@@ -82,6 +113,7 @@ export default function FirebaseFetcher() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:'20%',
     width: '70%',
     marginLeft: 'auto',
     marginRight: 'auto',
