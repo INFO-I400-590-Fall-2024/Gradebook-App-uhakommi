@@ -2,6 +2,9 @@
   "expo": {
     "name": "Gradebook-App",
     "slug": "Gradebook-App",
+    "notification": {
+      "iosDisplayInForeground": true
+      },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -11,10 +14,12 @@
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+      
     },
     "ios": {
       "supportsTablet": true
     },
+    
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
